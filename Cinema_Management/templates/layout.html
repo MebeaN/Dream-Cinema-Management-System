@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="shortcut icon" href="assets/images/logo.png" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+      <link rel="stylesheet" href="{{url_for('static', filename='css/navbar.css')}}">
+      <link rel="stylesheet" href="{{url_for('static', filename='css/footer.css')}}">
+
+    
+    {% block otherstyle %}{% endblock %}
+        
+    {% if title %}
+        <title>Dream Cinema - {{ title }}</title>
+    {% else %}
+        <title>Dream Cinema</title>
+    {% endif %}
+</head>
+<body>
+  {% block navbar %}
+    <!-- Nav Bar -->
+    <div class="entireNav fixed-top">
+
+      <span class="navTrigger" data-toggle="collapse" data-target="#navbarNav">
+        <i></i>
+        <i></i>
+        <i></i>
+        
+      </span>
+      <nav class="nav navbar navbar-expand-lg navbar-dark fixed-top" >
+        <a class="navbar-brand" id="len1" href="{{ url_for('index') }}">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo">
+          <!-- <i class="fab fa-dyalog d-inline" style="color: #0047ab; font-size: larger;"></i> -->
+          <p class="d-inline">Dream Cinema</p>
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a id="len2" class="nav-link hoverable" href="{{url_for('index')}}">Home</span></a>
+            </li>
+
+            <li class="nav-item">
+              <a id="len3" class="nav-link hoverable" href="{{url_for('about')}}">About Us</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link hoverable" href="{{url_for('contact')}}">Contact Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link hoverable" href="{{ url_for('movies') }}">Movies</a>
+            </li>
+          </ul>
+
+          <ul class="navbar-nav ml-auto">
+            {% if current_user.is_authenticated %}
+              <!-- <li class="nav-item">
+                <a class="nav-link hoverable loginRegister" href="{{url_for('account' ,id=current_user.id)}}">Account</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link hoverable loginRegister" href="{{url_for('logout')}}">Logout</a>
+              </li> -->
+              <div class="dropdown show profileDropdown userProfile">
+                <a class="btn dropdown-toggle profileDropdown" href="#" role="button" id="dropdownMenuLink"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;">
+                  <i class="fa fa-user-circle userIcon "></i>
+                  <span class="userIconName text-white emailID">{{current_user.email }}</span>
+                </a>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right menuDropdown">
+                  <a class="dropdown-item manageAccount" href="{{url_for('account' ,id=current_user.id)}}">
+                    <i class="fa fa-wrench pr-1" style="font-size: larger;">
+                    </i>
+                    Manage Account
+                  </a>
+  
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item logoutUser" href="{{url_for('logout')}}">
+                    <i class="fa fa-power-off pr-2" style="font-size: larger;">
+                    </i>Log Out</a>
+                </div>
+              </div>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link hoverable loginRegister" href="{{url_for('login')}}">Login | Register</a>
+              </li>
+            {% endif %}
+          </ul>
+          
+        </div>
+
+        
+          
+        </div>
+      </nav> 
+    </div>
+  {% endblock%}
+
+  {% block content %}{% endblock %}
+
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-12">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+
+      </div>
+    </main>
+
+  {% block footer %}
+    <!-- Footer -->
+    <footer class="footer py-3 mx-auto ">
+      <div class="container-fluid text-center">
+        <span class="text-muted h6">Dream Cinema © 2021</span>
+        <div class="text-white d-inline"> 
+          <a href="https://twitter.com/rickastley" rel="noopener" target="_blank" class="social text-white">TWITTER</a>
+          <a href="https://www.instagram.com/officialrickastley/" rel="noopener" target="_blank" class="social text-white">INSTAGRAM</a>
+        </div>
+      </div>
+    </footer>
+  {% endblock %}
+  
+  
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
+  {% block otherjs%}
+  
+  {%endblock%}
+  
+</body>
+</html>
